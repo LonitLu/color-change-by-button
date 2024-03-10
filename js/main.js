@@ -1,20 +1,28 @@
-const colors = ["#FF0000", "#FF1493", "#2E8B57", "#87CEEB", "#696969"];
 const page = document.getElementById("container");
 const btn = document.getElementById("btn");
 const btnDel = document.getElementById("btn__none");
+const colorData = document.getElementById("color__data");
 
-colorResp = () => {
-  const randomColors = Math.floor(Math.random() * colors.length);
-  page.style.backgroundColor = colors[randomColors];
-  console.log(randomColors);
+colorRandomApi = () => {
+  fetch(`https://www.thecolorapi.com/random?format=json`)
+    .then((response) => response.json())
+    .then((data) => {
+      page.style.backgroundColor = data.rgb.value;
+
+      document.getElementById("color__data").innerHTML = `
+      Название цвета: ${data.name.value}<br> 
+      RGB: ${data.rgb.value}<br> 
+      HEX: ${data.hex.value}
+      `;
+    });
 };
 
-btn.addEventListener("click", colorResp);
-
+btn.addEventListener("click", colorRandomApi);
 
 btnNone = () => {
   btnDel.classList.add("btn__none");
   btn.classList.add("btn__none");
+  colorData.classList.add("btn__none");
 };
 
 btnDel.addEventListener("click", btnNone);
